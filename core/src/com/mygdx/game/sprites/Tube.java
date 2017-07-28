@@ -20,7 +20,7 @@ public class Tube {
     private Texture topTube, bottomTube;
     private Vector2 posTopTube, posBotTube;
     private Random random;
-    private Rectangle boundsTop;
+    private Rectangle boundsTop, boundsBot;
 
     public Tube(float x){
 
@@ -30,6 +30,9 @@ public class Tube {
 
         posTopTube = new Vector2(x, random.nextInt(FLUCTUATION) + TUBE_GAP + LOWEST_OPENING);
         posBotTube = new Vector2(x, posTopTube.y - TUBE_GAP - bottomTube.getHeight());
+
+        boundsTop = new Rectangle(posTopTube.x, posTopTube.y, topTube.getWidth(), topTube.getHeight());
+        boundsBot = new Rectangle(posBotTube.x, posBotTube.y, bottomTube.getWidth(), bottomTube.getHeight());
     }
 
     public Texture getTopTube() {
@@ -52,6 +55,19 @@ public class Tube {
 
         posTopTube.set(x, random.nextInt(FLUCTUATION) + TUBE_GAP + LOWEST_OPENING);
         posBotTube.set(x, posTopTube.y - TUBE_GAP - bottomTube.getHeight());
+        boundsTop.setPosition(posTopTube.x, posTopTube.y);
+        boundsBot.setPosition(posBotTube.x, posBotTube.y);
+    }
+
+    public boolean collides(Rectangle player){
+
+        return player.overlaps(boundsTop) || player.overlaps(boundsBot);
+    }
+
+    public void dispose(){
+
+        topTube.dispose();
+        bottomTube.dispose();
     }
 
 }

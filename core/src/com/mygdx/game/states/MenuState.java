@@ -16,8 +16,9 @@ public class MenuState extends State {
 
     public MenuState(GameStateManager gsm) {
         super(gsm);
+        cam.setToOrtho(false, FlappyBirdDemo.WIDTH / 2, FlappyBirdDemo.HEIGHT / 2);  // set cam the center of the screen
         background = new Texture("bg.png");
-        playBtn = new Texture("playBtn.png");
+        playBtn = new Texture("playbtn.png");
     }
 
     @Override
@@ -25,7 +26,7 @@ public class MenuState extends State {
 
         if(Gdx.input.justTouched()){
             gsm.set(new PlayState(gsm));
-            dispose();
+           // dispose();  reuse for restart
         }
     }
 
@@ -36,10 +37,11 @@ public class MenuState extends State {
 
     @Override
     public void render(SpriteBatch sb) {
-
+        sb.setProjectionMatrix(cam.combined);
         sb.begin();
-        sb.draw(background, 0 ,0 , FlappyBirdDemo.WIDTH, FlappyBirdDemo.HEIGHT);
-        sb.draw(playBtn, (FlappyBirdDemo.WIDTH / 2) - (playBtn.getWidth() / 2), (FlappyBirdDemo.HEIGHT / 2));
+        sb.draw(background, 0 ,0);
+       // sb.draw(playBtn, (FlappyBirdDemo.WIDTH / 2) - (playBtn.getWidth() / 2), (FlappyBirdDemo.HEIGHT / 2));  for android only
+        sb.draw(playBtn, cam.position.x - playBtn.getWidth() / 2, cam.position.y);
         sb.end();
 
     }
@@ -49,6 +51,7 @@ public class MenuState extends State {
 
         background.dispose();
         playBtn.dispose();
+        System.out.println("Menu State dispose");
     }
 
 
